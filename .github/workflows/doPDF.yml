@@ -36,7 +36,7 @@ jobs:
 
     - name: Concatenate markdown files
       run: |
-        cat $FILES > /tmp/pandoc/combined.md
+        cat $FILES >> /tmp/pandoc/combined.md
         cat /tmp/pandoc/combined.md
 
     - name: Convert markdown to PDF
