@@ -23,29 +23,25 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y pandoc texlive
 
-    # Step 3: Find all markdown files in specified folders
+    - name: Create temporary directory
+      run: mkdir -p /tmp/pandoc
+
     - name: Find Markdown files
       id: find_files
       run: |
-        # Change directory to the folder containing the markdown files
-        # If you have multiple folders, modify this command
-        FILES=$(find ./ruokaisat -name "*.md" | sort)
+        FILES=$(find ./your-folder -name "*.md" | sort)
         echo "$FILES"
-        echo "files=$FILES" >> $GITHUB_ENV
+        FILES_SINGLE_LINE=$(echo "$FILES" | tr '\n' ' ')
+        echo "files=$FILES_SINGLE_LINE" >> $GITHUB_ENV
 
-    # Step 4: Concatenate all markdown files
     - name: Concatenate markdown files
-      run: |
-        cat $FILES > combined.md
+      run: cat $FILES > /tmp/pandoc/combined.md
 
-    # Step 5: Convert the concatenated markdown to PDF
     - name: Convert markdown to PDF
-      run: |
-        pandoc combined.md -o output.pdf --verbose
+      run: pandoc /tmp/pandoc/combined.md -o /tmp/pandoc/output.pdf --verbose
 
-    # Step 6: Upload the PDF as an artifact
     - name: Upload PDF
       uses: actions/upload-artifact@v3
       with:
         name: markdown-to-pdf
-        path: output.pdf
+        path: /tmp/pandoc/output.pdf
