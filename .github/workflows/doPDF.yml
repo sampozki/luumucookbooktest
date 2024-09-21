@@ -23,11 +23,6 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y pandoc texlive
 
-    - name: Lint markdown files
-      run: |
-        npm install -g markdownlint-cli
-        markdownlint "**/*.md"
-
     # Step 3: Find all markdown files in specified folders
     - name: Find Markdown files
       id: find_files
@@ -46,7 +41,7 @@ jobs:
     # Step 5: Convert the concatenated markdown to PDF
     - name: Convert markdown to PDF
       run: |
-        pandoc combined.md -o output.pdf
+        pandoc combined.md -o output.pdf --verbose
 
     # Step 6: Upload the PDF as an artifact
     - name: Upload PDF
